@@ -1,1 +1,54 @@
 
+<html>
+    <head>
+        <script>
+            function insertAfter(newElement,targetElement) {
+    // target is what you want it to go after. Look for this elements parent.
+    var parent = targetElement.parentNode;
+
+    // if the parents lastchild is the targetElement...
+    if (parent.lastChild == targetElement) {
+        // add the newElement after the target element.
+        parent.appendChild(newElement);
+    } else {
+        // else the target has siblings, insert the new element between the target and it's next sibling.
+        parent.insertBefore(newElement, targetElement.nextSibling);
+    }
+}
+            const labelNums = ["Antimatter","Total Antimatter","Infinity Power","Time Shards","Time Shard Threshold","Tickspeed Upgrades from Thresholds","Infinity Points","1/10 IPs","Eternity Points","First Dimensions Sacrificed","Soft Resets","Galaxies","Infinities","1/5 Infinities","Eternities","Tickspeed","Tickspeed Cost","Tickspeed Cost Increase","Tickspeed Cost Increase Increase","Tickspeed Cost Increase Increase Decrease Cost","Dimension Cost Increase Increase","Dimension Cost Increase Increase Decrease Cost","Time Played","Time Played in Infinity","Fastest Infinity","Time Played In Eternity","Fastest Eternity","Challenge 2 power","Challenge 3 power","Matter","Infinity Challenges Unlocked","Challenge Goal","Infinity Challenge 4 tier","Infinity Challenge 3 Reward","IP Multiplier","IP Multiplier Cost","EP Multiplier","EP Multiplier Cost","Passive IP Gain","Passive IP Gain Cost","Last Save Time","Soft Reset Autobuyer \"over X galaxies\" field","Version","Spreading Cancer Progress","Auto-Sacrifice Threshold","Highest IP/min in a Fully Automatic Infinity","Fastest Fully Automatic Infinity"]
+            const varNames =  ["money","totalMoney","infinityPower","timeShards","tickThreshold","totalTickGained",                                       "infinityPoints","partInfinityPoint","eternityPoints","sacrificed","resets","galaxies","infinitied","partInfinitied","eternitied",               "tickspeed","tickspeedCost","tickspeedMultiplier",     "tickSpeedMultDecrease","tickSpeedMultDecreaseCost","dimensionMultDecrease","dimensionMultDecreaseCost",                                                                "totalTimePlayed","thisInfinityTime","bestInfinityTime","thisEternity","bestEternity",                  "chall2Pow","chall3Pow","matter",                "postChallUnlocked","challengeTarget","postC4Tier","postC3Reward",                                        "infMult","infMultCost","epmult","epmultCost",                            "offlineProd","offlineProdCost",         "lastUpdate","overXGalaxies","version","spreadingCancer","autoSacrifice","autoIP","autoTime"]
+            function init() {
+                let carry = document.getElementById("base")
+                for (let i=0;i<labelNums.length;i++) {
+                    const label = document.createElement("div")
+                    label.innerHTML = labelNums[i]
+                    const field = document.createElement("input")
+                    field.type = "text"
+                    field.id = varNames[i]
+                    field.type2 = "number"
+                    const br = document.createElement("br")
+                    insertAfter(label,carry)
+                    insertAfter(field,label)
+                    insertAfter(br,field)
+                    carry = br
+                }
+            }
+            function load() {
+                const save = atob(document.getElementById("save").value)
+                console.log(save.replace(/"|{|}/g,''))
+                terms = save.replace(/"|{|}/g,'').split(",")
+                console.log(terms)
+                for (let i=0;i<labelNums.length;i++) {
+                    for (var j=0;j<terms.length;j++) {if (terms[j].startsWith(varNames[i])) break;};
+                    if (j<terms.length) document.getElementById(varNames[i]).value = terms[j].split(":")[1];
+                }
+            }
+        </script>
+        <title>AD Save Editor</title> <!-- TODO: Better name lol -->
+    </head>
+    <body onload="init()">
+        <textarea cols="150" placeholder="Your savefile" id="save"></textarea><br>
+        <button onclick="load()">Load save</button>
+        <br id="base">
+    </body>
+</html>
