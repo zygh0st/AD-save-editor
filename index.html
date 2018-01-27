@@ -27,45 +27,41 @@
                     label.innerHTML = labelNums[i]
                     const field = document.createElement("input")
                     field.type = "text"
-                    field.id = "b"+varNames[i]
+                    field.id = "b"+i
                     field.style.width = "95%"
                     insertAfter(label,carry)
                     insertAfter(field,label)
                     carry = field
                 }
                 for (let i=0;i<8;i++) {
-                    document.getElementById("dt").insertRow(i+1)
-                    document.getElementById("dt").rows[i+1].insertCell(0)
-                    document.getElementById("dt").rows[i+1].cells[0].innerHTML = "<b>Dimension " + (i+1) + "</b>"
-                    for (let j=0;j<4;j++) {
+                    const dt = document.getElementById("dt").insertRow(i+1)
+                    dt.insertCell(0).innerHTML = "<b>Dimension " + (i+1) + "</b>"
+                    for (let j=0;j<5;j++) {
                         const field = document.createElement("input")
                         field.type = "text"
-                        field.id = "d"+tierNames[i]+dimVals[j]
-                        document.getElementById("dt").rows[i+1].insertCell(j+1).appendChild(field)
+                        field.id = j==4? "dc"+i :"d"+i+j
+                        dt.insertCell(j+1).appendChild(field)
                     }
-                    const field = document.createElement("input")
-                    field.type = "text"
-                    field.id = "dc"+(i+1)
-                    document.getElementById("dt").rows[i+1].insertCell(5).appendChild(field)
                 }
 
+                //initializing values. It's important.
                 file = JSON.parse(atob(document.getElementById("save").value))
                 file.lastUpdate = new Date().getTime()
                 document.getElementById("save").value = btoa(JSON.stringify(file))
             }
             function load() {
                 file = JSON.parse(atob(document.getElementById("save").value))
-                for (let i=0;i<varNames.length;i++) document.getElementById("b"+varNames[i]).value = file[varNames[i]];
+                for (let i=0;i<varNames.length;i++) document.getElementById("b"+i).value = file[varNames[i]];
                 for (let i=0;i<8;i++) {
-                    document.getElementById("dc"+(i+1)).value = file["costMultipliers"][i]
-                    for (let j=0;j<4;j++) document.getElementById("d"+tierNames[i]+dimVals[j]).value = file[tierNames[i]+dimVals[j]]
+                    for (let j=0;j<4;j++) document.getElementById("d"+i+j).value = file[tierNames[i]+dimVals[j]]
+                    document.getElementById("dc"+i).value = file.costMultipliers[i]
                 }
             }
             function save() {
-                for (let i=0;i<varNames.length;i++) file[varNames[i]] = document.getElementById("b"+varNames[i]).value;
+                for (let i=0;i<varNames.length;i++) file[varNames[i]] = document.getElementById("b"+i).value;
                 for (let i=0;i<8;i++) {
-                    file["costMultipliers"][i] = document.getElementById("dc"+(i+1)).value
-                    for (let j=0;j<4;j++) file[tierNames[i]+dimVals[j]] = document.getElementById("d"+tierNames[i]+dimVals[j]).value
+                    for (let j=0;j<4;j++) file[tierNames[i]+dimVals[j]] = document.getElementById("d"+i+j).value
+                    file.costMultipliers[i] = document.getElementById("dc"+i).value
                 }
                 document.getElementById("save").value = btoa(JSON.stringify(file))
             }
