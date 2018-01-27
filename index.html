@@ -16,39 +16,74 @@
     }
 }
             const labelNums = ["Antimatter","Total Antimatter","Infinity Power","Time Shards","Time Shard Threshold","Tickspeed Upgrades from Thresholds","Infinity Points","1/10 IPs","Eternity Points","First Dimensions Sacrificed","Soft Resets","Galaxies","Infinities","1/5 Infinities","Eternities","Tickspeed","Tickspeed Cost","Tickspeed Cost Increase","Tickspeed Cost Increase Increase","Tickspeed Cost Increase Increase Decrease Cost","Dimension Cost Increase Increase","Dimension Cost Increase Increase Decrease Cost","Time Played","Time Played in Infinity","Fastest Infinity","Time Played In Eternity","Fastest Eternity","Challenge 2 power","Challenge 3 power","Matter","Infinity Challenges Unlocked","Challenge Goal","Infinity Challenge 4 tier","Infinity Challenge 3 Reward","IP Multiplier","IP Multiplier Cost","EP Multiplier","EP Multiplier Cost","Passive IP Gain","Passive IP Gain Cost","Last Save Time","Soft Reset Autobuyer \"over X galaxies\" field","Version","Spreading Cancer Progress","Auto-Sacrifice Threshold","Highest IP/min in a Fully Automatic Infinity","Fastest Fully Automatic Infinity"]
-            const varNames =  ["money","totalMoney","infinityPower","timeShards","tickThreshold","totalTickGained",                                       "infinityPoints","partInfinityPoint","eternityPoints","sacrificed","resets","galaxies","infinitied","partInfinitied","eternitied",               "tickspeed","tickspeedCost","tickspeedMultiplier",     "tickSpeedMultDecrease","tickSpeedMultDecreaseCost","dimensionMultDecrease","dimensionMultDecreaseCost",                                                                "totalTimePlayed","thisInfinityTime","bestInfinityTime","thisEternity","bestEternity",                  "chall2Pow","chall3Pow","matter",                "postChallUnlocked","challengeTarget","postC4Tier","postC3Reward",                                        "infMult","infMultCost","epmult","epmultCost",                            "offlineProd","offlineProdCost",         "lastUpdate","overXGalaxies","version","spreadingCancer","autoSacrifice","autoIP","autoTime"]
+            const varNames =  ["money","totalmoney","infinityPower","timeShards","tickThreshold","totalTickGained",                                       "infinityPoints","partInfinityPoint","eternityPoints","sacrificed","resets","galaxies","infinitied","partInfinitied","eternities",               "tickspeed","tickSpeedCost","tickspeedMultiplier",     "tickSpeedMultDecrease","tickSpeedMultDecreaseCost","dimensionMultDecrease","dimensionMultDecreaseCost",                                                                "totalTimePlayed","thisInfinityTime","bestInfinityTime","thisEternity","bestEternity",                  "chall2Pow","chall3Pow","matter",                "postChallUnlocked","challengeTarget","postC4Tier","postC3Reward",                                        "infMult","infMultCost","epmult","epmultCost",                            "offlineProd","offlineProdCost",         "lastUpdate","overXGalaxies","version","spreadingCancer","autoSacrifice","autoIP","autoTime"]
+            const tierNames = ["first","second","third","fourth","fifth","sixth","seventh","eight"]
+            let file;
             function init() {
                 let carry = document.getElementById("base")
-                for (let i=0;i<labelNums.length;i++) {
+                for (let i=0;i<varNames.length;i++) {
                     const label = document.createElement("div")
                     label.innerHTML = labelNums[i]
                     const field = document.createElement("input")
                     field.type = "text"
-                    field.id = varNames[i]
-                    field.type2 = "number"
-                    const br = document.createElement("br")
+                    field.id = "b"+varNames[i]
+                    field.style.width = "95%"
                     insertAfter(label,carry)
                     insertAfter(field,label)
-                    insertAfter(br,field)
-                    carry = br
+                    carry = field
                 }
+                for (let i=0;i<8;i++) {
+                    const costCheck = document.createElement("input")
+                    costCheck.type = "checkbox"
+                    const cost = document.createElement("td")
+                    cost.innerHTML = costCheck
+                    insertAfter(cost,document.getElementById("dim"+(i+1)))
+                }
+
+                file = JSON.parse(atob(document.getElementById("save").value))
+                file.lastUpdate = new Date().getTime()
+                document.getElementById("save").value = btoa(JSON.stringify(file))
             }
             function load() {
-                const save = atob(document.getElementById("save").value)
-                console.log(save.replace(/"|{|}/g,''))
-                terms = save.replace(/"|{|}/g,'').split(",")
-                console.log(terms)
-                for (let i=0;i<labelNums.length;i++) {
-                    for (var j=0;j<terms.length;j++) {if (terms[j].startsWith(varNames[i])) break;};
-                    if (j<terms.length) document.getElementById(varNames[i]).value = terms[j].split(":")[1];
-                }
+                file = JSON.parse(atob(document.getElementById("save").value))
+                for (let i=0;i<varNames.length;i++) document.getElementById("b"+varNames[i]).value = file[varNames[i]];
+            }
+            function save() {
+                for (let i=0;i<varNames.length;i++) file[varNames[i]] = document.getElementById("b"+varNames[i]).value;
+                document.getElementById("save").value = btoa(JSON.stringify(file))
             }
         </script>
         <title>AD Save Editor</title> <!-- TODO: Better name lol -->
     </head>
     <body onload="init()">
-        <textarea cols="150" placeholder="Your savefile" id="save"></textarea><br>
-        <button onclick="load()">Load save</button>
+        <textarea cols="150" placeholder="Your savefile" id="save">eyJtb25leSI6IjEwIiwidGlja1NwZWVkQ29zdCI6IjEwMDAiLCJ0aWNrc3BlZWQiOiIxMDAwIiwiZmlyc3RDb3N0IjoiMTAiLCJzZWNvbmRDb3N0IjoiMTAwIiwidGhpcmRDb3N0IjoiMTAwMDAiLCJmb3VydGhDb3N0IjoiMTAwMDAwMCIsImZpZnRoQ29zdCI6IjEwMDAwMDAwMDAiLCJzaXh0aENvc3QiOiIxMDAwMDAwMDAwMDAwMCIsInNldmVudGhDb3N0IjoiMTAwMDAwMDAwMDAwMDAwMDAwMCIsImVpZ2h0Q29zdCI6IjFlKzI0IiwiZmlyc3RBbW91bnQiOiIwIiwic2Vjb25kQW1vdW50IjoiMCIsInRoaXJkQW1vdW50IjoiMCIsImZvdXJ0aEFtb3VudCI6IjAiLCJmaXJzdEJvdWdodCI6MCwic2Vjb25kQm91Z2h0IjowLCJ0aGlyZEJvdWdodCI6MCwiZm91cnRoQm91Z2h0IjowLCJmaWZ0aEFtb3VudCI6IjAiLCJzaXh0aEFtb3VudCI6IjAiLCJzZXZlbnRoQW1vdW50IjoiMCIsImVpZ2h0QW1vdW50IjoiMCIsImZpZnRoQm91Z2h0IjowLCJzaXh0aEJvdWdodCI6MCwic2V2ZW50aEJvdWdodCI6MCwiZWlnaHRCb3VnaHQiOjAsImZpcnN0UG93IjoiMSIsInNlY29uZFBvdyI6IjEiLCJ0aGlyZFBvdyI6IjEiLCJmb3VydGhQb3ciOiIxIiwiZmlmdGhQb3ciOiIxIiwic2l4dGhQb3ciOiIxIiwic2V2ZW50aFBvdyI6IjEiLCJlaWdodFBvdyI6IjEiLCJzYWNyaWZpY2VkIjoiMCIsImFjaGlldmVtZW50cyI6W10sImluZmluaXR5VXBncmFkZXMiOltdLCJjaGFsbGVuZ2VzIjpbXSwiY3VycmVudENoYWxsZW5nZSI6IiIsImluZmluaXR5UG9pbnRzIjoiMCIsImluZmluaXRpZWQiOiIwIiwidG90YWxUaW1lUGxheWVkIjoiMCIsImJlc3RJbmZpbml0eVRpbWUiOiI5OTk5OTk5OTk5IiwidGhpc0luZmluaXR5VGltZSI6IjAiLCJyZXNldHMiOiIwIiwiZ2FsYXhpZXMiOiIwIiwidGlja0RlY3JlYXNlIjowLjksInRvdGFsbW9uZXkiOiIwIiwiYWNoUG93IjoiMSIsIm5ld3NBcnJheSI6W10sImludGVydmFsIjpudWxsLCJsYXN0VXBkYXRlIjoiMTUxNzA4MTkzNTU1NyIsImF1dG9idXllcnMiOlsxLDIsMyw0LDUsNiw3LDgsOSwxMCwxMSwxMl0sImNvc3RNdWx0aXBsaWVycyI6WyIxMDAwIiwiMTAwMDAiLCIxMDAwMDAiLCIxMDAwMDAwIiwiMTAwMDAwMDAwIiwiMTAwMDAwMDAwMDAiLCIxMDAwMDAwMDAwMDAwIiwiMTAwMDAwMDAwMDAwMDAwMCJdLCJ0aWNrc3BlZWRNdWx0aXBsaWVyIjoiMTAiLCJjaGFsbDJQb3ciOiIxIiwiY2hhbGwzUG93IjoiMC4wMSIsIm1hdHRlciI6IjAiLCJjaGFsbDExUG93IjoxLCJwYXJ0SW5maW5pdHlQb2ludCI6IjAiLCJwYXJ0SW5maW5pdGllZCI6IjAiLCJicmVhayI6ZmFsc2UsImNoYWxsZW5nZVRpbWVzIjpbMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDBdLCJpbmZjaGFsbGVuZ2VUaW1lcyI6WzI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwXSwibGFzdFRlblJ1bnMiOltbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXV0sImxhc3RUZW5FdGVybml0aWVzIjpbWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl1dLCJpbmZNdWx0IjoiMSIsImluZk11bHRDb3N0IjoiMTAiLCJ0aWNrU3BlZWRNdWx0RGVjcmVhc2UiOiIxMCIsInRpY2tTcGVlZE11bHREZWNyZWFzZUNvc3QiOiIzMDAwMDAwIiwiZGltZW5zaW9uTXVsdERlY3JlYXNlIjoiMTAiLCJkaW1lbnNpb25NdWx0RGVjcmVhc2VDb3N0IjoiMTAwMDAwMDAwIiwib3ZlclhHYWxheGllcyI6IjEwIiwidmVyc2lvbiI6IjcuMDEiLCJpbmZEaW1lbnNpb25zVW5sb2NrZWQiOltmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZV0sImluZmluaXR5UG93ZXIiOiIxIiwic3ByZWFkaW5nQ2FuY2VyIjoiMCIsInBvc3RDaGFsbFVubG9ja2VkIjoiMCIsInBvc3RDNFRpZXIiOiIwIiwicG9zdEMzUmV3YXJkIjoiMSIsImV0ZXJuaXR5UG9pbnRzIjoiMCIsImV0ZXJuaXRpZXMiOiIwIiwidGhpc0V0ZXJuaXR5IjoiMCIsImJlc3RFdGVybml0eSI6Ijk5OTk5OTk5OTkiLCJldGVybml0eVVwZ3JhZGVzIjpbXSwiZXBtdWx0IjoiMSIsImVwbXVsdENvc3QiOiI1MDAiLCJpbmZpbml0eURpbWVuc2lvbjEiOnsiY29zdCI6IjEwMDAwMDAwMCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjIiOnsiY29zdCI6IjEwMDAwMDAwMDAiLCJhbW91bnQiOiIwIiwiYm91Z2h0IjowLCJwb3dlciI6IjEiLCJiYXNlQW1vdW50IjowfSwiaW5maW5pdHlEaW1lbnNpb24zIjp7ImNvc3QiOiIxMDAwMDAwMDAwMCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjQiOnsiY29zdCI6IjEwMDAwMDAwMDAwMDAwMDAwMDAwMCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjUiOnsiY29zdCI6IjFlKzE0MCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjYiOnsiY29zdCI6IjFlKzIwMCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjciOnsiY29zdCI6IjFlKzI1MCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjgiOnsiY29zdCI6IjFlKzI4MCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZEaW1CdXllcnMiOltmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZV0sInRpbWVTaGFyZHMiOiIwIiwidGlja1RocmVzaG9sZCI6IjEiLCJ0b3RhbFRpY2tHYWluZWQiOiIwIiwidGltZURpbWVuc2lvbjEiOnsiY29zdCI6MSwiYW1vdW50IjoiMCIsInBvd2VyIjoxLCJib3VnaHQiOjB9LCJ0aW1lRGltZW5zaW9uMiI6eyJjb3N0Ijo1LCJhbW91bnQiOiIwIiwicG93ZXIiOjEsImJvdWdodCI6MH0sInRpbWVEaW1lbnNpb24zIjp7ImNvc3QiOjEwMCwiYW1vdW50IjoiMCIsInBvd2VyIjoxLCJib3VnaHQiOjB9LCJ0aW1lRGltZW5zaW9uNCI6eyJjb3N0IjoxMDAwLCJhbW91bnQiOiIwIiwicG93ZXIiOjEsImJvdWdodCI6MH0sIm9mZmxpbmVQcm9kIjoiMCIsIm9mZmxpbmVQcm9kQ29zdCI6IjEwMDAwMDAwIiwiY2hhbGxlbmdlVGFyZ2V0IjoiMCIsImF1dG9TYWNyaWZpY2UiOiIxIiwicmVwbGljYW50aSI6eyJhbW91bnQiOjAsInVubCI6ZmFsc2UsImNoYW5jZSI6MC4wMSwiY2hhbmNlQ29zdCI6IjFlKzE1MCIsImludGVydmFsIjoxMDAwLCJpbnRlcnZhbENvc3QiOiIxZSsxNjAiLCJnYWwiOjAsImdhbGF4aWVzIjowLCJnYWxDb3N0IjoiMWUrMTcwIiwiYXV0byI6W2ZhbHNlLGZhbHNlLGZhbHNlXX0sInRpbWVzdHVkeSI6eyJ0aGVvcmVtIjowLCJhbWNvc3QiOiIxZSsyMDAwMCIsImlwY29zdCI6IjEiLCJlcGNvc3QiOiIxIiwic3R1ZGllcyI6W119LCJhdXRvSVAiOiIwIiwiYXV0b1RpbWUiOiIxZSszMDAiLCJpbmZNdWx0QnV5ZXIiOmZhbHNlLCJhdXRvQ3J1bmNoTW9kZSI6ImFtb3VudCIsInJlc3BlYyI6ZmFsc2UsImV0ZXJuaXR5QnV5ZXIiOnsibGltaXQiOiIwIiwiaXNPbiI6ZmFsc2V9LCJvcHRpb25zIjp7Im5ld3NIaWRkZW4iOmZhbHNlLCJub3RhdGlvbiI6IlN0YW5kYXJkIiwic2NpZW50aWZpYyI6ZmFsc2UsImNoYWxsQ29uZiI6ZmFsc2UsInNhY3JpZmljZUNvbmZpcm1hdGlvbiI6dHJ1ZSwicmV0cnlDaGFsbGVuZ2UiOmZhbHNlLCJidWxrT24iOnRydWUsImNsb3VkIjp0cnVlLCJob3RrZXlzIjp0cnVlLCJldGVybml0eWNvbmZpcm0iOnRydWUsImNvbW1hcyI6dHJ1ZX19</textarea><br>
+        <button onclick="load()">Load save</button> <button onclick="save()">Save save</button>
         <br id="base">
+        <table border="1px solid black">
+            <tr>
+                <td></td>
+                <td>Cost</td>
+                <td>Amount</td>
+                <td>Multiplier</td>
+                <td>Bought</td>
+                <td>Cost Increase</td>
+            </tr><tr>
+                <td id="dim1">Dimension 1</td>
+            </tr><tr>
+                <td id="dim2">Dimension 2</td>
+            </tr><tr>
+                <td id="dim3">Dimension 3</td>
+            </tr><tr>
+                <td id="dim4">Dimension 4</td>
+            </tr><tr>
+                <td id="dim5">Dimension 5</td>
+            </tr><tr>
+                <td id="dim6">Dimension 6</td>
+            </tr><tr>
+                <td id="dim7">Dimension 7</td>
+            </tr><tr>
+                <td id="dim8">Dimension 8</td>
+            </tr>
+        </table>
     </body>
 </html>
