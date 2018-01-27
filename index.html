@@ -18,6 +18,7 @@
             const labelNums = ["Antimatter","Total Antimatter","Infinity Power","Time Shards","Time Shard Threshold","Tickspeed Upgrades from Thresholds","Infinity Points","1/10 IPs","Eternity Points","First Dimensions Sacrificed","Soft Resets","Galaxies","Infinities","1/5 Infinities","Eternities","Tickspeed","Tickspeed Cost","Tickspeed Cost Increase","Tickspeed Cost Increase Increase","Tickspeed Cost Increase Increase Decrease Cost","Dimension Cost Increase Increase","Dimension Cost Increase Increase Decrease Cost","Time Played","Time Played in Infinity","Fastest Infinity","Time Played In Eternity","Fastest Eternity","Challenge 2 power","Challenge 3 power","Matter","Infinity Challenges Unlocked","Challenge Goal","Infinity Challenge 4 tier","Infinity Challenge 3 Reward","IP Multiplier","IP Multiplier Cost","EP Multiplier","EP Multiplier Cost","Passive IP Gain","Passive IP Gain Cost","Last Save Time","Soft Reset Autobuyer \"over X galaxies\" field","Version","Spreading Cancer Progress","Auto-Sacrifice Threshold","Highest IP/min in a Fully Automatic Infinity","Fastest Fully Automatic Infinity"]
             const varNames =  ["money","totalmoney","infinityPower","timeShards","tickThreshold","totalTickGained",                                       "infinityPoints","partInfinityPoint","eternityPoints","sacrificed","resets","galaxies","infinitied","partInfinitied","eternities",               "tickspeed","tickSpeedCost","tickspeedMultiplier",     "tickSpeedMultDecrease","tickSpeedMultDecreaseCost","dimensionMultDecrease","dimensionMultDecreaseCost",                                                                "totalTimePlayed","thisInfinityTime","bestInfinityTime","thisEternity","bestEternity",                  "chall2Pow","chall3Pow","matter",                "postChallUnlocked","challengeTarget","postC4Tier","postC3Reward",                                        "infMult","infMultCost","epmult","epmultCost",                            "offlineProd","offlineProdCost",         "lastUpdate","overXGalaxies","version","spreadingCancer","autoSacrifice","autoIP","autoTime"]
             const tierNames = ["first","second","third","fourth","fifth","sixth","seventh","eight"]
+            const dimVals = ["Cost","Amount","Mult","Bought"]
             let file;
             function init() {
                 let carry = document.getElementById("base")
@@ -33,11 +34,16 @@
                     carry = field
                 }
                 for (let i=0;i<8;i++) {
-                    const costCheck = document.createElement("input")
-                    costCheck.type = "checkbox"
-                    const cost = document.createElement("td")
-                    cost.innerHTML = costCheck
-                    insertAfter(cost,document.getElementById("dim"+(i+1)))
+                    carry = document.getElementById("dim"+(i+1))
+                    for (let j=0;j<4;j++) {
+                        const field = document.createElement("input")
+                        field.type = "text"
+                        field.id = "d"+tierNames[i]+dimVals[j]
+                        let cell = document.createElement("td")
+                        cell = cell.appendChild(field)
+                        insertAfter(cell,carry)
+                        carry = cell
+                    }
                 }
 
                 file = JSON.parse(atob(document.getElementById("save").value))
@@ -47,9 +53,15 @@
             function load() {
                 file = JSON.parse(atob(document.getElementById("save").value))
                 for (let i=0;i<varNames.length;i++) document.getElementById("b"+varNames[i]).value = file[varNames[i]];
+                for (let i=0;i<8;i++) {
+                    document.getElementById("d"+tierNames[i]+"Cost").value = file[tierNames[i]+"Cost"]
+                }
             }
             function save() {
                 for (let i=0;i<varNames.length;i++) file[varNames[i]] = document.getElementById("b"+varNames[i]).value;
+                for (let i=0;i<8;i++) {
+                    file[tierNames[i]+"Cost"] = document.getElementById("d"+tierNames[i]+"Cost").value
+                }
                 document.getElementById("save").value = btoa(JSON.stringify(file))
             }
         </script>
@@ -60,14 +72,17 @@
         <button onclick="load()">Load save</button> <button onclick="save()">Save save</button>
         <br id="base">
         <table border="1px solid black">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Cost</th>
+                    <th>Amount</th>
+                    <th>Multiplier</th>
+                    <th>Bought</th>
+                    <th>Cost Increase</th>
+                </tr>
+            </thead>
             <tr>
-                <td></td>
-                <td>Cost</td>
-                <td>Amount</td>
-                <td>Multiplier</td>
-                <td>Bought</td>
-                <td>Cost Increase</td>
-            </tr><tr>
                 <td id="dim1">Dimension 1</td>
             </tr><tr>
                 <td id="dim2">Dimension 2</td>
