@@ -160,8 +160,9 @@
                     insertAfter(field,label)
                     carry = field
                 }
+                carry =  document.getElementById("base4")
                 for (let i=0;i<3;i++) {
-                    const label = document.createElement("div")
+                    const label = document.createElement("span")
                     label.innerHTML = labelRepAuto[i] + " Autobuyer"
                     const field = document.createElement("input")
                     field.type = "checkbox"
@@ -183,13 +184,13 @@
                 }
                 carry =  document.getElementById("base3")
                 for (let i=0;i<studyId.length;i++) {
+                    const label = document.createElement("span")
+                    label.innerHTML = studyId[i]
                     const field = document.createElement("input")
                     field.type = "checkbox"
                     field.id = "bts"+i
-                    const label = document.createElement("label")
-                    label.innerHTML = studyId[i]
-                    label.for = "bts"+i
-                    insertAfter(field,carry)
+                    insertAfter(label,carry)
+                    insertAfter(field,label)
                     carry = field 
                 }
 
@@ -391,6 +392,7 @@
         </select>
         <b>Replicanti</b><br>
         Unlocked? <input type="checkbox" id="rce"></input>
+        <br id="base4">
         <br id="base3">
     </body>
 </html>
