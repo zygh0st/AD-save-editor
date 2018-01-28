@@ -311,9 +311,9 @@
                 for (let i=0;i<labelRep.length;i++) file.replicanti[repNames[i]] = document.getElementById("r"+i).value
                 for (let i=0;i<3;i++) document.getElementById("rc"+i).checked = file.replicanti.auto[i]
                 for (let i=0;i<4;i++) file.timestudy[studyNames[i]] = document.getElementById("bt"+i).value
-                player.timestudy.studies = []
+                file.timestudy.studies = []
                 for (let i=0;i<studyId.length;i++) {
-                    if (document.getElementById("bts"+i).checked) player.timestudy.studies.push(studyId[i])
+                    if (document.getElementById("bts"+i).checked) file.timestudy.studies.push(studyId[i])
                 }
 
                 document.getElementById("save").value = btoa(JSON.stringify(file))
