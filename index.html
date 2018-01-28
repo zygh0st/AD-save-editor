@@ -251,7 +251,7 @@
                 document.getElementById("rce").checked = file.replicanti.unl;
                 for (let i=0;i<labelRep.length;i++) document.getElementById("r"+i).value = file.replicanti[repNames[i]]
                 for (let i=0;i<4;i++) document.getElementById("bt"+i).value = file.timestudy[studyNames[i]]
-                for (let i=0;i<studyId.length;i++) document.getElementById("bts"+i).checked = player.timestudy.studies.includes(studyId[i])
+                for (let i=0;i<studyId.length;i++) document.getElementById("bts"+i).checked = file.timestudy.studies.includes(studyId[i])
             }
             function save() {
                 for (let i=0;i<varNames.length;i++) file[varNames[i]] = document.getElementById("b"+i).value;
