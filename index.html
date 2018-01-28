@@ -227,6 +227,7 @@
                 if (document.getElementById("cct").value=="p") document.getElementById("ccn").value = file.currentChallenge.replace("postc","")
                 else if (file.currentChallenge=="") document.getElementById("ccn").value = 1
                 else document.getElementById("ccn").value = challOrder.indexOf(parseInt(file.currentChallenge.replace("challenge","")))+1
+                document.getElementById("cfs").value = file.challenges.includes("challenge1")
                 for (let i=0;i<11;i++) {
                     document.getElementById("cf"+i).checked = file.challenges.includes("challenge"+challOrder[i+1])
                     document.getElementById("ct"+i).value = file.challengeTimes[challOrder[i+1]-2]
