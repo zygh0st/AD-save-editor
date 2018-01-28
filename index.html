@@ -243,7 +243,10 @@
                     }
                     document.getElementById("cac"+i+0).checked = true
                     document.getElementById("cac"+i+1).checked = file.autobuyers[i].isOn
-                    for (let j=0;j<5;j++) document.getElementById("ca"+i+j).value = file.autobuyers[i][ABVals[j]]
+                    for (let j=0;j<5;j++) {
+                        if (i==8 && j==4) break;
+                        document.getElementById("ca"+i+j).value = file.autobuyers[i][ABVals[j]]
+                    }
                     if (i<9) document.getElementById("cam"+i).checked = file.autobuyers[i].target >= 10;
                 }
                 document.getElementById("cam9").value = file.overXGalaxies;
@@ -296,7 +299,10 @@
                         isOn: document.getElementById("cac"+i+1).checked,
                         tier: i+1
                     }
-                    for (let j=0;j<5;j++) file.autobuyers[i][ABVals[j]] = document.getElementById("ca"+i+j).value
+                    for (let j=0;j<5;j++) {
+                        if (i==8 && j==4) break;
+                        file.autobuyers[i][ABVals[j]] = document.getElementById("ca"+i+j).value
+                    }
                     if (i<9) file.autobuyers[i].target = (i+1)%9+document.getElementById("cam"+i).checked?10:0
                 }
                 file.overXGalaxies = document.getElementById("cam9").value
