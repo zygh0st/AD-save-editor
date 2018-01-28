@@ -21,7 +21,7 @@
             const dimVals = ["Cost","Amount","Pow","Bought"]
             const iDimVals = ["cost","baseAmount","amount","power"]
             const tDimVals = ["cost","amount","bought","power"]
-            const challOrder = [null,"","challenge2","challenge3","challenge8","challenge6","challenge10","challenge9","challenge11","challenge5","challenge4","challenge12","challenge7"]
+            const challOrder = ["",2,3,8,6,10,9,11,5,4,12,7]
             let file;
             function init() {
                 let carry = document.getElementById("base")
@@ -64,7 +64,7 @@
                     row.insertCell(6).appendChild(field2)
                 }
                 for (let i=0;i<4;i++) {
-                    row = document.getElementById("dtt").insertRow(i+1)
+                    const row = document.getElementById("dtt").insertRow(i+1)
                     row.insertCell(0).innerHTML = "<b>Time Dimension " + (i+1) + "</b>"
                     for (let j=0;j<4;j++) {
                         const field = document.createElement("input")
@@ -85,6 +85,50 @@
                     const br = document.createElement("br")
                     insertAfter(br,carry)
                     carry = br
+                }
+                for (let i=0;i<19;i++) { //challenges
+                    const row = document.getElementById("ct").insertRow(i+1)
+                    row.insertCell(0).innerHTML = "<b>"+(i<11?"Challenge " + (i+2):"Infinity Challenge " +(i-10)) + "</b>"
+                    const check = document.createElement("input")
+                    check.type = "checkbox"
+                    check.id = "cf"+i
+                    row.insertCell(1).appendChild(check)
+                    const field = document.createElement("input")
+                    field.type = "text"
+                    field.id = "ct"+i
+                    row.insertCell(2).appendChild(field)
+                }
+                for (let i=0;i<12;i++) { //autobuyers
+                    const row = document.getElementById("cat").insertRow(i+1)
+                    switch(i) {
+                        case 8: row.insertCell(0).innerHTML = "<b>Tickspeed Autobuyer</b>"; break;
+                        case 9: row.insertCell(0).innerHTML = "<b>Dimension Boost Autobuyer</b>"; break;
+                        case 10: row.insertCell(0).innerHTML = "<b>Galaxy Autobuyer</b>"; break;
+                        case 11: row.insertCell(0).innerHTML = "<b>Crunch Autobuyer</b>"; break;
+                        default: row.insertCell(0).innerHTML = "<b> Dimension " +(i+1)+ "Autobuyer</b>"; break;
+                    }
+                    for (let j=0;j<5;j++) {
+                        if (i==8 && j==4) {
+                            row.insertCell(5).innerHTML = "N/A"
+                            break;
+                        }
+                        const field = document.createElement("input")
+                        field.type = "text"
+                        field.id = "ca"+i+j
+                        row.insertCell(j+1).appendChild(field)
+                    }
+                    switch(i) {
+                        case 9: break;
+                        case 10: break;
+                        case 11: row.insertCell(6).appendChild(document.getElementById("ca11s")); break;
+                        default: 
+                        const field2 = document.createElement("input")
+                        field2.type = "checkbox"
+                        field2.id = "cam"+i
+                        row.insertCell(6).innerHTML = "Buy Multiple?"
+                        row.cells[6].appendChild(field2)
+                        break;
+                    }
                 }
 
                 //initializing values.
@@ -116,8 +160,23 @@
                 for (let i=0;i<10;i++) {
                     for (let j=0;j<8;j++) document.getElementById("a"+i+j).checked = file.achievements.includes("r"+(i+1)+(j+1))
                 }
-                document.getElementById("bcct").value = file.currentChallenge.includes("postc")?"p":"c"
-                document.getElementById("bccn").value = file.currentChallenge==""?1:parseInt(file.currentChallenge)
+                document.getElementById("cct").value = file.currentChallenge.includes("postc")?"p":"c"
+                if (document.getElementById("cct").value=="p") document.getElementById("ccn").value = file.currentChallenge.replace("postc","")
+                else if (file.currentChallenge=="") document.getElementById("ccn").value = 1
+                else document.getElementById("ccn").value = challOrder.indexOf(parseInt(file.currentChallenge.replace("challenge","")))+1
+                for (let i=0;i<11;i++) {
+                    document.getElementById("cf"+i).checked = file.challenges.includes("challenge"+challOrder[i+1])
+                    document.getElementById("ct"+i).value = file.challengeTimes[challOrder[i+1]-2]
+                }
+                for (let i=11;i<19;i++) {
+                    document.getElementById("cf"+i).checked = file.challenges.includes("postc"+(i-10))
+                    document.getElementById("ct"+i).value = file.infchallengeTimes[i-11]
+                }
+                for (let i=0;i<12;i++) {
+                    for (let j=0;j<5;j++) {
+                        //TODO
+                    }
+                }
             }
             function save() {
                 for (let i=0;i<varNames.length;i++) file[varNames[i]] = document.getElementById("b"+i).value;
@@ -139,7 +198,21 @@
                         if (document.getElementById("a"+i+j).checked) file.achievements.push("r"+(i+1)+(j+1))
                     }
                 }
-                file.currentChallenge = document.getElementById("bcct").value=="p"?"postc"+document.getElementById("bccn").value:challOrder[document.getElementById("bccn").value]
+                if (document.getElementById("cct").value=="p") file.currentChallenge = "postc"+document.getElementById("ccn").value
+                else if (document.getElementById("ccn").value==1) file.currentChallenge = ""
+                else file.currentChallenge = "challenge"+challOrder[document.getElementById("ccn").value-1]
+                file.challenges = []
+                if (document.getElementById("cfs").checked) file.challenges = ["challenge1"]
+                else file.challenges = []
+                for (let i=0;i<11;i++) {
+                    if (document.getElementById("cf"+i).checked) file.challenges.push("challenge"+challOrder[i+1])
+                    file.challengeTimes[challOrder[i+1]] = document.getElementById("ct"+i).value
+                }
+                for (let i=11;i<19;i++) {
+                    if (document.getElementById("cf"+i).checked) file.challenges.push("postc"+(i-10))
+                    file.infchallengeTimes[i-11] = document.getElementById("ct"+i).value
+                }
+
                 document.getElementById("save").value = btoa(JSON.stringify(file))
                 localStorage.setItem("ADeditor",document.getElementById("save").value)
             }
@@ -187,9 +260,37 @@
             </thead>
         </table>
         <div id="base2">Achievements</div>
-        <select id="bcct">
+        <select id="cct">
             <option value="c">Normal Challenge</option>
             <option value="p">Infinity Challenge</option>
-        </select> <input type="number" min="1" max="12" id="bccn"></input>
+        </select> <input type="number" min="1" max="12" id="ccn"></input>
+        <br>Cleared challenge 1? <input type="checkbox" id="cfs"></input>
+        <table border="2px solid black" id="ct">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Completed?</th>
+                    <th>Best Time</th>
+                </tr>
+            </thead>
+        </table>
+        <table border="2px solid black" id="cat">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Cost</th>
+                    <th>Interval</th>
+                    <th>Priority</th>
+                    <th>Progress</th>
+                    <th>Bulk</th>
+                    <th>Mode</th>
+                </tr>
+            </thead>
+        </table>
+        <select id="ca11s">
+            <option value="amount">amount</option>
+            <option value="time">time</option>
+            <option value="relative">X times last crunch</option>
+        </select>
     </body>
 </html>
