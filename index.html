@@ -20,6 +20,7 @@
             const tierNames = ["first","second","third","fourth","fifth","sixth","seventh","eight"]
             const dimVals = ["Cost","Amount","Pow","Bought"]
             const iDimVals = ["cost","baseAmount","amount","power"]
+            const tDimVals = ["cost","amount","bought","power"]
             let file;
             function init() {
                 let carry = document.getElementById("base")
@@ -46,9 +47,9 @@
 
                     row = document.getElementById("dit").insertRow(i+1)
                     row.insertCell(0).innerHTML = "<b>Infinity Dimension " + (i+1) + "</b>"
-                    const field2 = document.createElement("input")
+                    let field2 = document.createElement("input")
                     field2.type = "checkbox"
-                    field2.id = "dic"+i
+                    field2.id = "diu"+i
                     row.insertCell(1).appendChild(field2)
                     for (let j=0;j<4;j++) {
                         const field = document.createElement("input")
@@ -56,15 +57,34 @@
                         field.id = "di"+i+j
                         row.insertCell(j+2).appendChild(field)
                     }
+                    field2 = document.createElement("input")
+                    field2.type = "checkbox"
+                    field2.id = "dia"+i
+                    row.insertCell(6).appendChild(field2)
+                }
+                for (let i=0;i<4;i++) {
+                    row = document.getElementById("dtt").insertRow(i+1)
+                    row.insertCell(0).innerHTML = "<b>Time Dimension " + (i+1) + "</b>"
+                    for (let j=0;j<4;j++) {
+                        const field = document.createElement("input")
+                        field.type = "text"
+                        field.id = "dt"+i+j
+                        row.insertCell(j+1).appendChild(field)
+                    }
                 }
 
                 //initializing values.
-                file = JSON.parse(atob(document.getElementById("save").value))
-                file.lastUpdate = new Date().getTime() //makes it as if you made a new save right when you open the page
-                document.getElementById("save").value = btoa(JSON.stringify(file))
+                /*file = localStorage.getItem("ADeditor")
+                if (file) file = JSON.parse(file)
+                else {*/
+                    file = JSON.parse(atob("eyJtb25leSI6IjEwIiwidGlja1NwZWVkQ29zdCI6IjEwMDAiLCJ0aWNrc3BlZWQiOiIxMDAwIiwiZmlyc3RDb3N0IjoiMTAiLCJzZWNvbmRDb3N0IjoiMTAwIiwidGhpcmRDb3N0IjoiMTAwMDAiLCJmb3VydGhDb3N0IjoiMTAwMDAwMCIsImZpZnRoQ29zdCI6IjEwMDAwMDAwMDAiLCJzaXh0aENvc3QiOiIxMDAwMDAwMDAwMDAwMCIsInNldmVudGhDb3N0IjoiMTAwMDAwMDAwMDAwMDAwMDAwMCIsImVpZ2h0Q29zdCI6IjFlKzI0IiwiZmlyc3RBbW91bnQiOiIwIiwic2Vjb25kQW1vdW50IjoiMCIsInRoaXJkQW1vdW50IjoiMCIsImZvdXJ0aEFtb3VudCI6IjAiLCJmaXJzdEJvdWdodCI6MCwic2Vjb25kQm91Z2h0IjowLCJ0aGlyZEJvdWdodCI6MCwiZm91cnRoQm91Z2h0IjowLCJmaWZ0aEFtb3VudCI6IjAiLCJzaXh0aEFtb3VudCI6IjAiLCJzZXZlbnRoQW1vdW50IjoiMCIsImVpZ2h0QW1vdW50IjoiMCIsImZpZnRoQm91Z2h0IjowLCJzaXh0aEJvdWdodCI6MCwic2V2ZW50aEJvdWdodCI6MCwiZWlnaHRCb3VnaHQiOjAsImZpcnN0UG93IjoiMSIsInNlY29uZFBvdyI6IjEiLCJ0aGlyZFBvdyI6IjEiLCJmb3VydGhQb3ciOiIxIiwiZmlmdGhQb3ciOiIxIiwic2l4dGhQb3ciOiIxIiwic2V2ZW50aFBvdyI6IjEiLCJlaWdodFBvdyI6IjEiLCJzYWNyaWZpY2VkIjoiMCIsImFjaGlldmVtZW50cyI6W10sImluZmluaXR5VXBncmFkZXMiOltdLCJjaGFsbGVuZ2VzIjpbXSwiY3VycmVudENoYWxsZW5nZSI6IiIsImluZmluaXR5UG9pbnRzIjoiMCIsImluZmluaXRpZWQiOiIwIiwidG90YWxUaW1lUGxheWVkIjoiMCIsImJlc3RJbmZpbml0eVRpbWUiOiI5OTk5OTk5OTk5IiwidGhpc0luZmluaXR5VGltZSI6IjAiLCJyZXNldHMiOiIwIiwiZ2FsYXhpZXMiOiIwIiwidGlja0RlY3JlYXNlIjowLjksInRvdGFsbW9uZXkiOiIwIiwiYWNoUG93IjoiMSIsIm5ld3NBcnJheSI6W10sImludGVydmFsIjpudWxsLCJsYXN0VXBkYXRlIjoiMTUxNzA4MTkzNTU1NyIsImF1dG9idXllcnMiOlsxLDIsMyw0LDUsNiw3LDgsOSwxMCwxMSwxMl0sImNvc3RNdWx0aXBsaWVycyI6WyIxMDAwIiwiMTAwMDAiLCIxMDAwMDAiLCIxMDAwMDAwIiwiMTAwMDAwMDAwIiwiMTAwMDAwMDAwMDAiLCIxMDAwMDAwMDAwMDAwIiwiMTAwMDAwMDAwMDAwMDAwMCJdLCJ0aWNrc3BlZWRNdWx0aXBsaWVyIjoiMTAiLCJjaGFsbDJQb3ciOiIxIiwiY2hhbGwzUG93IjoiMC4wMSIsIm1hdHRlciI6IjAiLCJjaGFsbDExUG93IjoxLCJwYXJ0SW5maW5pdHlQb2ludCI6IjAiLCJwYXJ0SW5maW5pdGllZCI6IjAiLCJicmVhayI6ZmFsc2UsImNoYWxsZW5nZVRpbWVzIjpbMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDBdLCJpbmZjaGFsbGVuZ2VUaW1lcyI6WzI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwXSwibGFzdFRlblJ1bnMiOltbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXV0sImxhc3RUZW5FdGVybml0aWVzIjpbWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl1dLCJpbmZNdWx0IjoiMSIsImluZk11bHRDb3N0IjoiMTAiLCJ0aWNrU3BlZWRNdWx0RGVjcmVhc2UiOiIxMCIsInRpY2tTcGVlZE11bHREZWNyZWFzZUNvc3QiOiIzMDAwMDAwIiwiZGltZW5zaW9uTXVsdERlY3JlYXNlIjoiMTAiLCJkaW1lbnNpb25NdWx0RGVjcmVhc2VDb3N0IjoiMTAwMDAwMDAwIiwib3ZlclhHYWxheGllcyI6IjEwIiwidmVyc2lvbiI6IjcuMDEiLCJpbmZEaW1lbnNpb25zVW5sb2NrZWQiOltmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZV0sImluZmluaXR5UG93ZXIiOiIxIiwic3ByZWFkaW5nQ2FuY2VyIjoiMCIsInBvc3RDaGFsbFVubG9ja2VkIjoiMCIsInBvc3RDNFRpZXIiOiIwIiwicG9zdEMzUmV3YXJkIjoiMSIsImV0ZXJuaXR5UG9pbnRzIjoiMCIsImV0ZXJuaXRpZXMiOiIwIiwidGhpc0V0ZXJuaXR5IjoiMCIsImJlc3RFdGVybml0eSI6Ijk5OTk5OTk5OTkiLCJldGVybml0eVVwZ3JhZGVzIjpbXSwiZXBtdWx0IjoiMSIsImVwbXVsdENvc3QiOiI1MDAiLCJpbmZpbml0eURpbWVuc2lvbjEiOnsiY29zdCI6IjEwMDAwMDAwMCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjIiOnsiY29zdCI6IjEwMDAwMDAwMDAiLCJhbW91bnQiOiIwIiwiYm91Z2h0IjowLCJwb3dlciI6IjEiLCJiYXNlQW1vdW50IjowfSwiaW5maW5pdHlEaW1lbnNpb24zIjp7ImNvc3QiOiIxMDAwMDAwMDAwMCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjQiOnsiY29zdCI6IjEwMDAwMDAwMDAwMDAwMDAwMDAwMCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjUiOnsiY29zdCI6IjFlKzE0MCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjYiOnsiY29zdCI6IjFlKzIwMCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjciOnsiY29zdCI6IjFlKzI1MCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjgiOnsiY29zdCI6IjFlKzI4MCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZEaW1CdXllcnMiOltmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZV0sInRpbWVTaGFyZHMiOiIwIiwidGlja1RocmVzaG9sZCI6IjEiLCJ0b3RhbFRpY2tHYWluZWQiOiIwIiwidGltZURpbWVuc2lvbjEiOnsiY29zdCI6MSwiYW1vdW50IjoiMCIsInBvd2VyIjoxLCJib3VnaHQiOjB9LCJ0aW1lRGltZW5zaW9uMiI6eyJjb3N0Ijo1LCJhbW91bnQiOiIwIiwicG93ZXIiOjEsImJvdWdodCI6MH0sInRpbWVEaW1lbnNpb24zIjp7ImNvc3QiOjEwMCwiYW1vdW50IjoiMCIsInBvd2VyIjoxLCJib3VnaHQiOjB9LCJ0aW1lRGltZW5zaW9uNCI6eyJjb3N0IjoxMDAwLCJhbW91bnQiOiIwIiwicG93ZXIiOjEsImJvdWdodCI6MH0sIm9mZmxpbmVQcm9kIjoiMCIsIm9mZmxpbmVQcm9kQ29zdCI6IjEwMDAwMDAwIiwiY2hhbGxlbmdlVGFyZ2V0IjoiMCIsImF1dG9TYWNyaWZpY2UiOiIxIiwicmVwbGljYW50aSI6eyJhbW91bnQiOjAsInVubCI6ZmFsc2UsImNoYW5jZSI6MC4wMSwiY2hhbmNlQ29zdCI6IjFlKzE1MCIsImludGVydmFsIjoxMDAwLCJpbnRlcnZhbENvc3QiOiIxZSsxNjAiLCJnYWwiOjAsImdhbGF4aWVzIjowLCJnYWxDb3N0IjoiMWUrMTcwIiwiYXV0byI6W2ZhbHNlLGZhbHNlLGZhbHNlXX0sInRpbWVzdHVkeSI6eyJ0aGVvcmVtIjowLCJhbWNvc3QiOiIxZSsyMDAwMCIsImlwY29zdCI6IjEiLCJlcGNvc3QiOiIxIiwic3R1ZGllcyI6W119LCJhdXRvSVAiOiIwIiwiYXV0b1RpbWUiOiIxZSszMDAiLCJpbmZNdWx0QnV5ZXIiOmZhbHNlLCJhdXRvQ3J1bmNoTW9kZSI6ImFtb3VudCIsInJlc3BlYyI6ZmFsc2UsImV0ZXJuaXR5QnV5ZXIiOnsibGltaXQiOiIwIiwiaXNPbiI6ZmFsc2V9LCJvcHRpb25zIjp7Im5ld3NIaWRkZW4iOmZhbHNlLCJub3RhdGlvbiI6IlN0YW5kYXJkIiwic2NpZW50aWZpYyI6ZmFsc2UsImNoYWxsQ29uZiI6ZmFsc2UsInNhY3JpZmljZUNvbmZpcm1hdGlvbiI6dHJ1ZSwicmV0cnlDaGFsbGVuZ2UiOmZhbHNlLCJidWxrT24iOnRydWUsImNsb3VkIjp0cnVlLCJob3RrZXlzIjp0cnVlLCJldGVybml0eWNvbmZpcm0iOnRydWUsImNvbW1hcyI6dHJ1ZX19"))
+                    file.lastUpdate = new Date().getTime() //makes it as if you made a new save right when you open the page
+                    document.getElementById("save").value = btoa(JSON.stringify(file))
+                //}
                 load()
             }
             function load() {
+                localStorage.setItem("ADeditor",document.getElementById("save").value)
                 file = JSON.parse(atob(document.getElementById("save").value))
                 for (let i=0;i<varNames.length;i++) document.getElementById("b"+i).value = file[varNames[i]];
                 for (let i=0;i<8;i++) {
@@ -73,7 +93,11 @@
                         document.getElementById("di"+i+j).value = file["infinityDimension"+(i+1)][iDimVals[j]]
                     }
                     document.getElementById("dc"+i).value = file.costMultipliers[i]
-                    document.getElementById("dic"+i).value = file.infDimensionsUnlocked[i]
+                    document.getElementById("diu"+i).checked = file.infDimensionsUnlocked[i]
+                    document.getElementById("dia"+i).checked = file.infDimBuyers[i]
+                }
+                for (let i=0;i<4;i++) {
+                    for (let j=0;j<4;j++) document.getElementById("dt"+i+j).value = file["timeDimension"+(i+1)][tDimVals[j]]
                 }
             }
             function save() {
@@ -84,15 +108,20 @@
                         file["infinityDimension"+(i+1)][iDimVals[j]] = document.getElementById("di"+i+j).value
                     }
                     file.costMultipliers[i] = document.getElementById("dc"+i).value
-                    file.infDimensionsUnlocked[i] = document.getElementById("dic"+i).value
+                    file.infDimensionsUnlocked[i] = document.getElementById("diu"+i).checked
+                    file.infDimBuyers[i] = document.getElementById("dia"+i).checked
+                }
+                for (let i=0;i<4;i++) {
+                    for (let j=0;j<4;j++) file["timeDimension"+(i+1)][tDimVals[j]] = document.getElementById("dt"+i+j).value
                 }
                 document.getElementById("save").value = btoa(JSON.stringify(file))
+                localStorage.setItem("ADeditor",document.getElementById("save").value)
             }
         </script>
-        <title>AD Save Editor</title> <!-- TODO: Better name lol -->
+        <title>AD Save Editor</title>
     </head>
     <body onload="init()">
-        <textarea cols="150" placeholder="Your savefile" id="save">eyJtb25leSI6IjEwIiwidGlja1NwZWVkQ29zdCI6IjEwMDAiLCJ0aWNrc3BlZWQiOiIxMDAwIiwiZmlyc3RDb3N0IjoiMTAiLCJzZWNvbmRDb3N0IjoiMTAwIiwidGhpcmRDb3N0IjoiMTAwMDAiLCJmb3VydGhDb3N0IjoiMTAwMDAwMCIsImZpZnRoQ29zdCI6IjEwMDAwMDAwMDAiLCJzaXh0aENvc3QiOiIxMDAwMDAwMDAwMDAwMCIsInNldmVudGhDb3N0IjoiMTAwMDAwMDAwMDAwMDAwMDAwMCIsImVpZ2h0Q29zdCI6IjFlKzI0IiwiZmlyc3RBbW91bnQiOiIwIiwic2Vjb25kQW1vdW50IjoiMCIsInRoaXJkQW1vdW50IjoiMCIsImZvdXJ0aEFtb3VudCI6IjAiLCJmaXJzdEJvdWdodCI6MCwic2Vjb25kQm91Z2h0IjowLCJ0aGlyZEJvdWdodCI6MCwiZm91cnRoQm91Z2h0IjowLCJmaWZ0aEFtb3VudCI6IjAiLCJzaXh0aEFtb3VudCI6IjAiLCJzZXZlbnRoQW1vdW50IjoiMCIsImVpZ2h0QW1vdW50IjoiMCIsImZpZnRoQm91Z2h0IjowLCJzaXh0aEJvdWdodCI6MCwic2V2ZW50aEJvdWdodCI6MCwiZWlnaHRCb3VnaHQiOjAsImZpcnN0UG93IjoiMSIsInNlY29uZFBvdyI6IjEiLCJ0aGlyZFBvdyI6IjEiLCJmb3VydGhQb3ciOiIxIiwiZmlmdGhQb3ciOiIxIiwic2l4dGhQb3ciOiIxIiwic2V2ZW50aFBvdyI6IjEiLCJlaWdodFBvdyI6IjEiLCJzYWNyaWZpY2VkIjoiMCIsImFjaGlldmVtZW50cyI6W10sImluZmluaXR5VXBncmFkZXMiOltdLCJjaGFsbGVuZ2VzIjpbXSwiY3VycmVudENoYWxsZW5nZSI6IiIsImluZmluaXR5UG9pbnRzIjoiMCIsImluZmluaXRpZWQiOiIwIiwidG90YWxUaW1lUGxheWVkIjoiMCIsImJlc3RJbmZpbml0eVRpbWUiOiI5OTk5OTk5OTk5IiwidGhpc0luZmluaXR5VGltZSI6IjAiLCJyZXNldHMiOiIwIiwiZ2FsYXhpZXMiOiIwIiwidGlja0RlY3JlYXNlIjowLjksInRvdGFsbW9uZXkiOiIwIiwiYWNoUG93IjoiMSIsIm5ld3NBcnJheSI6W10sImludGVydmFsIjpudWxsLCJsYXN0VXBkYXRlIjoiMTUxNzA4MTkzNTU1NyIsImF1dG9idXllcnMiOlsxLDIsMyw0LDUsNiw3LDgsOSwxMCwxMSwxMl0sImNvc3RNdWx0aXBsaWVycyI6WyIxMDAwIiwiMTAwMDAiLCIxMDAwMDAiLCIxMDAwMDAwIiwiMTAwMDAwMDAwIiwiMTAwMDAwMDAwMDAiLCIxMDAwMDAwMDAwMDAwIiwiMTAwMDAwMDAwMDAwMDAwMCJdLCJ0aWNrc3BlZWRNdWx0aXBsaWVyIjoiMTAiLCJjaGFsbDJQb3ciOiIxIiwiY2hhbGwzUG93IjoiMC4wMSIsIm1hdHRlciI6IjAiLCJjaGFsbDExUG93IjoxLCJwYXJ0SW5maW5pdHlQb2ludCI6IjAiLCJwYXJ0SW5maW5pdGllZCI6IjAiLCJicmVhayI6ZmFsc2UsImNoYWxsZW5nZVRpbWVzIjpbMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDAsMjY3ODQwMDBdLCJpbmZjaGFsbGVuZ2VUaW1lcyI6WzI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwLDI2Nzg0MDAwXSwibGFzdFRlblJ1bnMiOltbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXSxbMjY3ODQwMDAsIjEiXV0sImxhc3RUZW5FdGVybml0aWVzIjpbWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl0sWzI2Nzg0MDAwLCIxIl1dLCJpbmZNdWx0IjoiMSIsImluZk11bHRDb3N0IjoiMTAiLCJ0aWNrU3BlZWRNdWx0RGVjcmVhc2UiOiIxMCIsInRpY2tTcGVlZE11bHREZWNyZWFzZUNvc3QiOiIzMDAwMDAwIiwiZGltZW5zaW9uTXVsdERlY3JlYXNlIjoiMTAiLCJkaW1lbnNpb25NdWx0RGVjcmVhc2VDb3N0IjoiMTAwMDAwMDAwIiwib3ZlclhHYWxheGllcyI6IjEwIiwidmVyc2lvbiI6IjcuMDEiLCJpbmZEaW1lbnNpb25zVW5sb2NrZWQiOltmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZV0sImluZmluaXR5UG93ZXIiOiIxIiwic3ByZWFkaW5nQ2FuY2VyIjoiMCIsInBvc3RDaGFsbFVubG9ja2VkIjoiMCIsInBvc3RDNFRpZXIiOiIwIiwicG9zdEMzUmV3YXJkIjoiMSIsImV0ZXJuaXR5UG9pbnRzIjoiMCIsImV0ZXJuaXRpZXMiOiIwIiwidGhpc0V0ZXJuaXR5IjoiMCIsImJlc3RFdGVybml0eSI6Ijk5OTk5OTk5OTkiLCJldGVybml0eVVwZ3JhZGVzIjpbXSwiZXBtdWx0IjoiMSIsImVwbXVsdENvc3QiOiI1MDAiLCJpbmZpbml0eURpbWVuc2lvbjEiOnsiY29zdCI6IjEwMDAwMDAwMCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjIiOnsiY29zdCI6IjEwMDAwMDAwMDAiLCJhbW91bnQiOiIwIiwiYm91Z2h0IjowLCJwb3dlciI6IjEiLCJiYXNlQW1vdW50IjowfSwiaW5maW5pdHlEaW1lbnNpb24zIjp7ImNvc3QiOiIxMDAwMDAwMDAwMCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjQiOnsiY29zdCI6IjEwMDAwMDAwMDAwMDAwMDAwMDAwMCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjUiOnsiY29zdCI6IjFlKzE0MCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjYiOnsiY29zdCI6IjFlKzIwMCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjciOnsiY29zdCI6IjFlKzI1MCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZpbml0eURpbWVuc2lvbjgiOnsiY29zdCI6IjFlKzI4MCIsImFtb3VudCI6IjAiLCJib3VnaHQiOjAsInBvd2VyIjoiMSIsImJhc2VBbW91bnQiOjB9LCJpbmZEaW1CdXllcnMiOltmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZV0sInRpbWVTaGFyZHMiOiIwIiwidGlja1RocmVzaG9sZCI6IjEiLCJ0b3RhbFRpY2tHYWluZWQiOiIwIiwidGltZURpbWVuc2lvbjEiOnsiY29zdCI6MSwiYW1vdW50IjoiMCIsInBvd2VyIjoxLCJib3VnaHQiOjB9LCJ0aW1lRGltZW5zaW9uMiI6eyJjb3N0Ijo1LCJhbW91bnQiOiIwIiwicG93ZXIiOjEsImJvdWdodCI6MH0sInRpbWVEaW1lbnNpb24zIjp7ImNvc3QiOjEwMCwiYW1vdW50IjoiMCIsInBvd2VyIjoxLCJib3VnaHQiOjB9LCJ0aW1lRGltZW5zaW9uNCI6eyJjb3N0IjoxMDAwLCJhbW91bnQiOiIwIiwicG93ZXIiOjEsImJvdWdodCI6MH0sIm9mZmxpbmVQcm9kIjoiMCIsIm9mZmxpbmVQcm9kQ29zdCI6IjEwMDAwMDAwIiwiY2hhbGxlbmdlVGFyZ2V0IjoiMCIsImF1dG9TYWNyaWZpY2UiOiIxIiwicmVwbGljYW50aSI6eyJhbW91bnQiOjAsInVubCI6ZmFsc2UsImNoYW5jZSI6MC4wMSwiY2hhbmNlQ29zdCI6IjFlKzE1MCIsImludGVydmFsIjoxMDAwLCJpbnRlcnZhbENvc3QiOiIxZSsxNjAiLCJnYWwiOjAsImdhbGF4aWVzIjowLCJnYWxDb3N0IjoiMWUrMTcwIiwiYXV0byI6W2ZhbHNlLGZhbHNlLGZhbHNlXX0sInRpbWVzdHVkeSI6eyJ0aGVvcmVtIjowLCJhbWNvc3QiOiIxZSsyMDAwMCIsImlwY29zdCI6IjEiLCJlcGNvc3QiOiIxIiwic3R1ZGllcyI6W119LCJhdXRvSVAiOiIwIiwiYXV0b1RpbWUiOiIxZSszMDAiLCJpbmZNdWx0QnV5ZXIiOmZhbHNlLCJhdXRvQ3J1bmNoTW9kZSI6ImFtb3VudCIsInJlc3BlYyI6ZmFsc2UsImV0ZXJuaXR5QnV5ZXIiOnsibGltaXQiOiIwIiwiaXNPbiI6ZmFsc2V9LCJvcHRpb25zIjp7Im5ld3NIaWRkZW4iOmZhbHNlLCJub3RhdGlvbiI6IlN0YW5kYXJkIiwic2NpZW50aWZpYyI6ZmFsc2UsImNoYWxsQ29uZiI6ZmFsc2UsInNhY3JpZmljZUNvbmZpcm1hdGlvbiI6dHJ1ZSwicmV0cnlDaGFsbGVuZ2UiOmZhbHNlLCJidWxrT24iOnRydWUsImNsb3VkIjp0cnVlLCJob3RrZXlzIjp0cnVlLCJldGVybml0eWNvbmZpcm0iOnRydWUsImNvbW1hcyI6dHJ1ZX19</textarea><br>
+        <textarea cols="150" placeholder="Your savefile" id="save"></textarea><br>
         <button onclick="load()">Load save</button> <button onclick="save()">Save save</button>
         <br id="base">
         <table border="1px solid green" id="dt">
@@ -115,6 +144,18 @@
                     <th>Cost</th>
                     <th>Bought</th>
                     <th>Amount</th>
+                    <th>Power</th>
+                    <th>Autobuyer</th>
+                </tr>
+            </thead>
+        </table>
+        <table border="1px solid yellow" id="dtt">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Cost</th>
+                    <th>Amount</th>
+                    <th>Bought</th>
                     <th>Power</th>
                 </tr>
             </thead>
