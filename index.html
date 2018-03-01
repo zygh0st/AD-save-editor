@@ -16,7 +16,7 @@
     }
 }
             const labelNums = ["Antimatter","Total Antimatter","Infinity Power","Time Shards","Time Shard Threshold","Tickspeed Upgrades from TDs","Infinity Points","1/10 IPs","Eternity Points","First Dimensions Sacrificed","Soft Resets","Galaxies","Infinities","1/5 Infinities","Banked Infinities","Eternities","Tickspeed","Tickspeed Cost","Tickspeed Cost Increase","Tickspeed Cost Increase Increase","Tickspeed Cost Increase Increase Decrease Cost","Dimension Cost Increase Increase","Dimension Cost Increase Increase Decrease Cost","Time Played","Time Played in Infinity","Fastest Infinity","Time Played In Eternity","Fastest Eternity","Challenge 2 power","Challenge 3 power","Matter","Infinity Challenges Unlocked","Challenge Goal","Infinity Challenge 4 tier","Infinity Challenge 3 Reward","IP Multiplier","IP Multiplier Cost","EP Multiplier","EP Multiplier Cost","Passive IP Gain","Passive IP Gain Cost","EC target","Unlocked EC","Current EC","EC8 ID upgrades remaining","EC8 Replicanti upgrades remaining","Last Save Time","Version","Spreading Cancer Progress","Auto-Sacrifice Threshold","Highest IP/min in a Fully Automatic Infinity","Fastest Fully Automatic Infinity"]
-            const varNames =  ["money","totalmoney","infinityPower","timeShards","tickThreshold","totalTickGained",                                "infinityPoints","partInfinityPoint","infinitiedBank","eternityPoints","sacrificed","resets","galaxies","infinitied","partInfinitied","eternities",                  "tickspeed","tickSpeedCost","tickspeedMultiplier",     "tickSpeedMultDecrease","tickSpeedMultDecreaseCost","dimensionMultDecrease","dimensionMultDecreaseCost",                                                                "totalTimePlayed","thisInfinityTime","bestInfinityTime","thisEternity","bestEternity",                  "chall2Pow","chall3Pow","matter",                "postChallUnlocked","challengeTarget","postC4Tier","postC3Reward",                                        "infMult","infMultCost","epmult","epmultCost",                            "offlineProd","offlineProdCost",        ,"eternityChallGoal","eternityChallUnlocked","currentEternityChall","eterc8ids","eterc8repl",           "lastUpdate","version","spreadingCancer","autoSacrifice","autoIP","autoTime"]
+            const varNames =  ["money","totalmoney","infinityPower","timeShards","tickThreshold","totalTickGained",                                "infinityPoints","partInfinityPoint","infinitiedBank","eternityPoints","sacrificed","resets","galaxies","infinitied","partInfinitied","eternities",                  "tickspeed","tickSpeedCost","tickspeedMultiplier",     "tickSpeedMultDecrease","tickSpeedMultDecreaseCost","dimensionMultDecrease","dimensionMultDecreaseCost",                                                                "totalTimePlayed","thisInfinityTime","bestInfinityTime","thisEternity","bestEternity",                  "chall2Pow","chall3Pow","matter",                "postChallUnlocked","challengeTarget","postC4Tier","postC3Reward",                                        "infMult","infMultCost","epmult","epmultCost",                            "offlineProd","offlineProdCost",         "eternityChallGoal","eternityChallUnlocked","currentEternityChall","eterc8ids","eterc8repl",           "lastUpdate","version","spreadingCancer","autoSacrifice","autoIP","autoTime"]
             const tierNames = ["first","second","third","fourth","fifth","sixth","seventh","eight"]
             const dimVals = ["Cost","Amount","Pow","Bought"]
             const iDimVals = ["cost","baseAmount","amount","power"]
@@ -82,7 +82,7 @@
                     }
                 }
                 carry = document.getElementById("base2")
-                for (let i=0;i<10;i++) { //achievements
+                for (let i=0;i<12;i++) { //achievements
                     for (let j=0;j<8;j++) {
                         const ach = document.createElement("input")
                         ach.type = "checkbox"
@@ -203,7 +203,26 @@
                     insertAfter(field,carry)
                     carry = field
                 }
-
+                for (let i=0;i<10;i++) { //last 10 infs
+                    const row = document.getElementById("spit").insertRow(i+1)
+                    row.insertCell(0).innerHTML = "<b>"+(i+1)+" infinities ago</b>"
+                    const ip = document.createElement("input")
+                    ip.id = "spii"+i
+                    row.insertCell(1).appendChild(ip)
+                    const time = document.createElement("input")
+                    time.id = "spid"+i
+                    row.insertCell(2).appendChild(time)
+                }
+                for (let i=0;i<10;i++) { //last 10 eternities
+                    const row = document.getElementById("spet").insertRow(i+1)
+                    row.insertCell(0).innerHTML = "<b>"+(i+1)+" eternities ago</b>"
+                    const ep = document.createElement("input")
+                    ep.id = "spee"+i
+                    row.insertCell(1).appendChild(ep)
+                    const time = document.createElement("input")
+                    time.id = "sped"+i
+                    row.insertCell(2).appendChild(time)
+                }
 
                 //initializing values.
                 file = localStorage.getItem("ADeditor")
@@ -231,7 +250,7 @@
                 for (let i=0;i<4;i++) {
                     for (let j=0;j<4;j++) document.getElementById("dt"+i+j).value = file["timeDimension"+(i+1)][tDimVals[j]]
                 }
-                for (let i=0;i<10;i++) {
+                for (let i=0;i<12;i++) {
                     for (let j=0;j<8;j++) document.getElementById("a"+i+j).checked = file.achievements.includes("r"+(i+1)+(j+1))
                 }
                 document.getElementById("cct").value = file.currentChallenge.includes("postc")?"p":"c"
@@ -270,6 +289,12 @@
                     if (file.eternityChalls["eterc"+i] == undefined) document.getElementById("ce"+i).value = 0
                     else document.getElementById("ce"+i).value = file.eternityChalls["eterc"+i]
                 }
+                for (let i=0;i<10;i++) {
+                    document.getElementById("spii"+i).value = file.lastTenRuns[i][1]
+                    document.getElementById("spid"+i).value = file.lastTenRuns[i][0]
+                    document.getElementById("spee"+i).value = file.lastTenEternities[i][1]
+                    document.getElementById("sped"+i).value = file.lastTenEternities[i][0]
+                }
             }
             function save() {
                 for (let i=0;i<varNames.length;i++) file[varNames[i]] = document.getElementById("b"+i).value;
@@ -286,7 +311,7 @@
                     for (let j=0;j<4;j++) file["timeDimension"+(i+1)][tDimVals[j]] = document.getElementById("dt"+i+j).value
                 }
                 file.achievements = []
-                for (let i=0;i<10;i++) {
+                for (let i=0;i<12;i++) {
                     for (let j=0;j<8;j++) {
                         if (document.getElementById("a"+i+j).checked) file.achievements.push("r"+(i+1)+(j+1))
                     }
@@ -333,6 +358,12 @@
                 for (let i=1;i<=10;i++) {
                     if (document.getElementById("ce"+i).value == 0) file.eternityChalls["eterc"+i] = undefined
                     else file.eternityChalls["eterc"+i] = document.getElementById("ce"+i).value
+                }
+                for (let i=0;i<10;i++) {
+                    file.lastTenRuns[i][1] = document.getElementById("spii"+i).value
+                    file.lastTenRuns[i][0] = document.getElementById("spid"+i).value
+                    file.lastTenEternities[i][1] = document.getElementById("spee"+i).value
+                    file.lastTenEternities[i][0] = document.getElementById("sped"+i).value
                 }
 
                 document.getElementById("save").value = btoa(JSON.stringify(file))
@@ -421,6 +452,24 @@
         <br id="base4">
         Purchased Studies:<br id="base3">
         <br>
-        <span id="base5">EC times completed:</span> 
+        <span id="base5">EC times completed:</span>
+        <table border="2px solid black" id="spit">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>IP gain</th>
+                    <th>Run Time</th>
+                </tr>
+            </thead>
+        </table>
+        <table border="2px solid black" id="spet">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>EP gain</th>
+                    <th>Run Time</th>
+                </tr>
+            </thead>
+        </table>
     </body>
 </html>
