@@ -297,7 +297,11 @@
                 }
             }
             function save() {
-                for (let i=0;i<varNames.length;i++) file[varNames[i]] = document.getElementById("b"+i).value;
+                for (let i=0;i<varNames.length;i++) {
+                    const v = file[varNames[i]]
+                    if (v !== undefined && v < 1e+308) file[varNames[i]] = parseFloat(document.getElementById("b"+i).value)
+                    else file[varNames[i]] = document.getElementById("b"+i).value;
+                }
                 for (let i=0;i<8;i++) {
                     for (let j=0;j<4;j++) {
                         file[tierNames[i]+dimVals[j]] = document.getElementById("d"+i+j).value
@@ -324,7 +328,7 @@
                 else file.challenges = []
                 for (let i=0;i<11;i++) {
                     if (document.getElementById("cf"+i).checked) file.challenges.push("challenge"+challOrder[i+1])
-                    file.challengeTimes[challOrder[i+1]] = document.getElementById("ct"+i).value
+                    file.challengeTimes[challOrder[i+1]-2] = document.getElementById("ct"+i).value
                 }
                 for (let i=11;i<19;i++) {
                     if (document.getElementById("cf"+i).checked) file.challenges.push("postc"+(i-10))
@@ -348,7 +352,7 @@
                 file.overXGalaxies = document.getElementById("cam9").value
                 file.autoCrunchMode = document.getElementById("cam11").value
                 file.replicanti.unl = document.getElementById("rce").checked;
-                for (let i=0;i<labelRep.length;i++) file.replicanti[repNames[i]] = document.getElementById("r"+i).value
+                for (let i=0;i<labelRep.length;i++) file.replicanti[repNames[i]] = parseFloat(document.getElementById("r"+i).value)
                 for (let i=0;i<3;i++) document.getElementById("rc"+i).checked = file.replicanti.auto[i]
                 for (let i=0;i<4;i++) file.timestudy[studyNames[i]] = document.getElementById("bt"+i).value
                 file.timestudy.studies = []
@@ -438,7 +442,6 @@
                     <th>Priority</th>
                     <th>Progress</th>
                     <th>Bulk</th>
-                    <th></th>
                 </tr>
             </thead>
         </table>
