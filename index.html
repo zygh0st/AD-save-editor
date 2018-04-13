@@ -323,7 +323,6 @@
                 if (document.getElementById("cct").value=="p") file.currentChallenge = "postc"+document.getElementById("ccn").value
                 else if (document.getElementById("ccn").value==1) file.currentChallenge = ""
                 else file.currentChallenge = "challenge"+challOrder[document.getElementById("ccn").value-1]
-                file.challenges = []
                 if (document.getElementById("cfs").checked) file.challenges = ["challenge1"]
                 else file.challenges = []
                 for (let i=0;i<11;i++) {
@@ -345,7 +344,7 @@
                     }
                     for (let j=0;j<5;j++) {
                         if (i==8 && j==4) break;
-                        file.autobuyers[i][ABVals[j]] = document.getElementById("ca"+i+j).value
+                        file.autobuyers[i][ABVals[j]] = parseFloat(document.getElementById("ca"+i+j).value)
                     }
                     if (i<9) file.autobuyers[i].target = (i+1)%9+document.getElementById("cam"+i).checked?10:0
                 }
@@ -365,9 +364,9 @@
                 }
                 for (let i=0;i<10;i++) {
                     file.lastTenRuns[i][1] = document.getElementById("spii"+i).value
-                    file.lastTenRuns[i][0] = document.getElementById("spid"+i).value
+                    file.lastTenRuns[i][0] = parseFloat(document.getElementById("spid"+i).value)
                     file.lastTenEternities[i][1] = document.getElementById("spee"+i).value
-                    file.lastTenEternities[i][0] = document.getElementById("sped"+i).value
+                    file.lastTenEternities[i][0] = parseFloat(document.getElementById("sped"+i).value)
                 }
 
                 document.getElementById("save").value = btoa(JSON.stringify(file))
