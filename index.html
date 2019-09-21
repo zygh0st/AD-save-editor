@@ -327,11 +327,11 @@
                 else file.challenges = []
                 for (let i=0;i<11;i++) {
                     if (document.getElementById("cf"+i).checked) file.challenges.push("challenge"+challOrder[i+1])
-                    file.challengeTimes[challOrder[i+1]-2] = document.getElementById("ct"+i).value
+                    file.challengeTimes[challOrder[i+1]-2] = stringFilter(document.getElementById("ct"+i).value)
                 }
                 for (let i=11;i<19;i++) {
                     if (document.getElementById("cf"+i).checked) file.challenges.push("postc"+(i-10))
-                    file.infchallengeTimes[i-11] = document.getElementById("ct"+i).value
+                    file.infchallengeTimes[i-11] = stringFilter(document.getElementById("ct"+i).value)
                 }
                 for (let i=0;i<12;i++) {
                     if (!document.getElementById("cac"+i+0).checked) {
@@ -353,7 +353,8 @@
                 file.replicanti.unl = document.getElementById("rce").checked;
                 for (let i=0;i<labelRep.length;i++) file.replicanti[repNames[i]] = parseFloat(document.getElementById("r"+i).value)
                 for (let i=0;i<3;i++) document.getElementById("rc"+i).checked = file.replicanti.auto[i]
-                for (let i=0;i<4;i++) file.timestudy[studyNames[i]] = document.getElementById("bt"+i).value
+                file.timestudy[studyNames[0]] = stringFilter(document.getElementById("bt0").value)
+                for (let i=1;i<4;i++) file.timestudy[studyNames[i]] = document.getElementById("bt"+i).value
                 file.timestudy.studies = []
                 for (let i=0;i<studyId.length;i++) {
                     if (document.getElementById("bts"+i).checked) file.timestudy.studies.push(studyId[i])
