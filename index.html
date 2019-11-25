@@ -28,7 +28,7 @@
             const repNames = ["amount","chance","chanceCost","interval","intervalCost","gal","galCost","galaxies"]
             const labelStudy = ["Theorems","Antimatter Cost","Infinity Point Cost","Eternity Point Cost"]
             const studyNames = ["theorem","amcost","ipcost","epcost"]
-            const studyId = [11, 21, 22, 33, 31, 32, 41, 42, 51, 61, 62, 71, 72, 73, 81, 82 ,83, 91, 92, 93, 101, 102, 103, 111, 121, 122, 123, 131, 132, 133, 141, 142, 143, 151, 161, 162, 171, 181, 191, 192, 193, 201, 211, 212, 213, 214]
+            const studyId = [11, 21, 22, 33, 31, 32, 41, 42, 51, 61, 62, 71, 72, 73, 81, 82 ,83, 91, 92, 93, 101, 102, 103, 111, 121, 122, 123, 131, 132, 133, 141, 142, 143, 151, 161, 162, 171, 181, 191, 192, 193, 201, 211, 212, 213, 214, 221, 222, 223, 224, 225, 226, 227, 228, 231, 232, 233, 234]
             let file;
 
             function init() {
@@ -191,7 +191,7 @@
                     field.id = "bts"+i
                     insertAfter(field,carry)
                     insertAfter(label,field)
-                    carry = label 
+                    carry = label
                 }
                 carry = document.getElementById("base5")
                 for (let i=1;i<=10;i++) { //ECs
