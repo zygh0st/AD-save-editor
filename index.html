@@ -185,13 +185,13 @@
                 carry =  document.getElementById("base3")
                 for (let i=0;i<studyId.length;i++) {
                     const label = document.createElement("span")
-                    label.innerHTML = studyId[i]
+                    label.innerHTML = studyId[i] + "&nbsp;"
                     const field = document.createElement("input")
                     field.type = "checkbox"
                     field.id = "bts"+i
-                    insertAfter(label,carry)
-                    insertAfter(field,label)
-                    carry = field 
+                    insertAfter(field,carry)
+                    insertAfter(label,field)
+                    carry = label 
                 }
                 carry = document.getElementById("base5")
                 for (let i=1;i<=10;i++) { //ECs
