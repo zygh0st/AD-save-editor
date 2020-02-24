@@ -71,7 +71,7 @@
                     field2.id = "dia"+i
                     row.insertCell(6).appendChild(field2)
                 }
-                for (let i=0;i<4;i++) {
+                for (let i=0;i<8;i++) {
                     const row = document.getElementById("dtt").insertRow(i+1)
                     row.insertCell(0).innerHTML = "<b>Time Dimension " + (i+1) + "</b>"
                     for (let j=0;j<4;j++) {
@@ -82,7 +82,7 @@
                     }
                 }
                 carry = document.getElementById("base2")
-                for (let i=0;i<12;i++) { //achievements
+                for (let i=0;i<13;i++) { //achievements
                     for (let j=0;j<8;j++) {
                         const ach = document.createElement("input")
                         ach.type = "checkbox"
