@@ -247,10 +247,10 @@
                     document.getElementById("diu"+i).checked = file.infDimensionsUnlocked[i]
                     document.getElementById("dia"+i).checked = file.infDimBuyers[i]
                 }
-                for (let i=0;i<4;i++) {
+                for (let i=0;i<8;i++) {
                     for (let j=0;j<4;j++) document.getElementById("dt"+i+j).value = file["timeDimension"+(i+1)][tDimVals[j]]
                 }
-                for (let i=0;i<12;i++) {
+                for (let i=0;i<13;i++) {
                     for (let j=0;j<8;j++) document.getElementById("a"+i+j).checked = file.achievements.includes("r"+(i+1)+(j+1))
                 }
                 document.getElementById("cct").value = file.currentChallenge.includes("postc")?"p":"c"
@@ -285,7 +285,7 @@
                 for (let i=0;i<labelRep.length;i++) document.getElementById("r"+i).value = file.replicanti[repNames[i]]
                 for (let i=0;i<4;i++) document.getElementById("bt"+i).value = file.timestudy[studyNames[i]]
                 for (let i=0;i<studyId.length;i++) document.getElementById("bts"+i).checked = file.timestudy.studies.includes(studyId[i])
-                for (let i=1;i<=10;i++) {
+                for (let i=1;i<=12;i++) {
                     if (file.eternityChalls["eterc"+i] == undefined) document.getElementById("ce"+i).value = 0
                     else document.getElementById("ce"+i).value = file.eternityChalls["eterc"+i]
                 }
@@ -311,11 +311,11 @@
                     file.infDimensionsUnlocked[i] = document.getElementById("diu"+i).checked
                     file.infDimBuyers[i] = document.getElementById("dia"+i).checked
                 }
-                for (let i=0;i<4;i++) {
+                for (let i=0;i<8;i++) {
                     for (let j=0;j<4;j++) file["timeDimension"+(i+1)][tDimVals[j]] = stringFilter(document.getElementById("dt"+i+j).value)
                 }
                 file.achievements = []
-                for (let i=0;i<12;i++) {
+                for (let i=0;i<13;i++) {
                     for (let j=0;j<8;j++) {
                         if (document.getElementById("a"+i+j).checked) file.achievements.push("r"+(i+1)+(j+1))
                     }
@@ -359,7 +359,7 @@
                 for (let i=0;i<studyId.length;i++) {
                     if (document.getElementById("bts"+i).checked) file.timestudy.studies.push(studyId[i])
                 }
-                for (let i=1;i<=10;i++) {
+                for (let i=1;i<=12;i++) {
                     if (document.getElementById("ce"+i).value == 0) file.eternityChalls["eterc"+i] = undefined
                     else file.eternityChalls["eterc"+i] = parseFloat(document.getElementById("ce"+i).value)
                 }
